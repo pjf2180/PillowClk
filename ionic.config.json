@@ -1,0 +1,7 @@
+{
+  "name": "pilloClock",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

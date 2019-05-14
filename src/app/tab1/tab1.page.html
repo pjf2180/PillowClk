@@ -1,0 +1,115 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Alarma
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-card class="welcome-card">
+      <ion-img src="/assets/happy-woman-sleeping-pillow.png"></ion-img>
+      <ion-card-header>
+        <ion-card-subtitle>Empieza a dormir mejor</ion-card-subtitle>
+        <ion-card-title>Bienvenido a PillowClock</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Escoge tu horario favorito para ir a dormir y despertar, asegurandote de que estas durmiendo lo suficiente.</p>
+      </ion-card-content>
+    </ion-card>
+    <ion-list>
+      <ion-list-header>
+        <ion-label>Configuración</ion-label>
+      </ion-list-header>
+      <ion-item>
+        <ion-label>Alarma activada</ion-label>
+        <ion-toggle *ngIf="config" #alrmToggl [(ngModel)]="config.alarmActivated" (ionChange)="switchedToggle(alrmToggl)" color="primary"></ion-toggle>
+    </ion-item>
+    </ion-list>
+    <ion-grid fixed>
+
+      
+      <ion-row>
+        <ion-col size="6">
+          <ion-chip *ngIf="perDaySleeping" color="secondary">
+              <ion-label color="success">{{sleepTime}}</ion-label> 
+          </ion-chip>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="6">
+          <ion-row>
+            <ion-icon name="moon"></ion-icon>
+            <ion-icon name="bed"></ion-icon>
+          </ion-row>
+          <ion-row>
+           Hora de dormir
+          </ion-row>
+          
+          <ion-row>
+            <ion-item>
+              <ion-datetime #sleepTimePicker
+              doneText="Save"
+              placeholder="sleep time"
+              [(ngModel)]="config.bedTime"
+              (ngModelChange)="onTimePickerChanged()"
+              display-format="HH:mm "
+              pickerFormat="H mm "></ion-datetime>
+            </ion-item>  
+          </ion-row>
+          
+          
+        </ion-col>
+
+        <ion-col size="6">
+          <ion-row>
+            <ion-icon name="sunny"></ion-icon>
+            <ion-icon  name="body"></ion-icon>
+          </ion-row>
+          <ion-row>
+            Hora de despertar
+          </ion-row>
+          <ion-row>
+            <ion-item>
+              <ion-datetime #wakeTimePicker
+              doneText="Save"
+              placeholder="wake up time"
+              [(ngModel)]="config.wakeTime"
+              (ngModelChange)="onTimePickerChanged()"
+              display-format="HH:mm "
+              pickerFormat="H mm "></ion-datetime>
+            </ion-item>
+            
+          </ion-row>
+          
+        </ion-col>
+
+      </ion-row>
+
+      
+
+      
+    </ion-grid>
+    <!-- <ion-list lines="none">
+      <ion-list-header>
+        <ion-label>Resources</ion-label>
+      </ion-list-header>
+      <ion-item href="https://ionicframework.com/docs/">
+        <ion-icon slot="start" color="medium" name="book"></ion-icon>
+        <ion-label>Ionic Documentation</ion-label>
+      </ion-item>
+      <ion-item href="https://ionicframework.com/docs/building/scaffolding">
+        <ion-icon slot="start" color="medium" name="build"></ion-icon>
+        <ion-label>Scaffold Out Your App</ion-label>
+      </ion-item>
+      <ion-item href="https://ionicframework.com/docs/layout/structure">
+        <ion-icon slot="start" color="medium" name="grid"></ion-icon>
+        <ion-label>Change Your App Layout</ion-label>
+      </ion-item>
+      <ion-item href="https://ionicframework.com/docs/theming/basics">
+        <ion-icon slot="start" color="medium" name="color-fill"></ion-icon>
+        <ion-label>Theme Your App</ion-label>
+      </ion-item>
+    </ion-list> -->
+</ion-content>
