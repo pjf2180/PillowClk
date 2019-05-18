@@ -13,7 +13,7 @@
         </ion-list-header>
         <ion-item>
           <ion-label>Luz activada</ion-label>
-          <ion-toggle color="primary" slot="end" [(ngModel)]="config.lightActivated" (ionChange)="ligthToggl()" ></ion-toggle>
+          <ion-toggle color="primary" slot="end" [(ngModel)]="config.lightActivated" (ionChange)="deactivateLight()" ></ion-toggle>
           <ion-icon class="ion-color-step-50" name="sunny"></ion-icon>
         </ion-item>
         <ion-item>
@@ -27,7 +27,8 @@
               snaps="true" 
               pin="true" 
               color="secondary"
-              [(ngModel)]="config.lightAnticipation">
+              [(ngModel)]="config.lightAnticipation"
+              (ionChange)="lightAnticipation()">
               <ion-label slot="start">0</ion-label>
               <ion-label slot="end">60</ion-label>
             </ion-range>
