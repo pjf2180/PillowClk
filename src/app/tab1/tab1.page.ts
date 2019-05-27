@@ -2,6 +2,8 @@ import { Component, ViewChild, OnInit  } from '@angular/core';
 import { IonDatetime, IonRange, IonLabel, IonToggle } from '@ionic/angular';
 import { Time } from '@angular/common';
 import { ConfigService, IConfig } from '../services/config.service';
+import { BleService } from '../services/ble.service';
+import { pillowService, alarm_act_UUID, set_alarm_time_UUID } from '../services/ble.services.const';
 
 
 interface ITickSpan {
@@ -25,14 +27,13 @@ export class Tab1Page implements OnInit {
 
   private perDaySleeping: Time = {'hours': 8, 'minutes': 0};
   private sleepTime = '';
-  constructor(private configurationService: ConfigService) {
+  constructor(private configurationService: ConfigService,private bleService:BleService) {
     // this.sleepTime =  new Date().toISOString();
     console.log('tab1 started');
     console.log(configurationService);
     this.config =  this.configurationService.getConfig();
   }
   ngOnInit() {
-
 
     this.sleepPicker.minuteValues = '0,5,10,15,20,25,30,35,40,45,50,55';
     this.wakePicker.minuteValues = this.sleepPicker.minuteValues;
@@ -60,13 +61,23 @@ export class Tab1Page implements OnInit {
     this.sleepTime = this.getElapsedTimeString();
 
   }
+  alarmActivation(){
+    this.set_alarm_time();
+    this.bleService.writeService(pillowService,alarm_act_UUID,(this.config.alarmActivated ?  [0,1]:[0,2]));
+    
+  }
+  set_alarm_time(){
+    this.bleService.writeService(pillowService,set_alarm_time_UUID,[1,0,15]);
+  }
 
   onKnobFocus() {
     console.log('will move');
 
   }
   switchedToggle(t: IonToggle) {
+    this.alarmActivation();
     this.configurationService.saveOnLocalStorage();
+    
   }
   onTimePickerChanged() {
     console.log('timer picker changed');
@@ -74,6 +85,7 @@ export class Tab1Page implements OnInit {
     console.log(`WakeTime: ${this.getMinutesElapsed(this.wakePicker.value)}`);
     this.sleepTime = this.getElapsedTimeString();
     this.configurationService.saveOnLocalStorage();
+    this.set_alarm_time();
   }
   getElapsedTimeString(): string {
 

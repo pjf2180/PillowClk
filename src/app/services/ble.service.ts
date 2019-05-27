@@ -1,8 +1,9 @@
 import { Injectable, NgZone } from '@angular/core';
 import { BLE } from '@ionic-native/ble/ngx';
 import { Observable } from 'rxjs';
+import { pillowService } from './ble.services.const';
 
-const exampleService = '4fafc201-1fb5-459e-8fcc-c5c9c331914b';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -12,14 +13,14 @@ export class BleService {
   discoveredDevices:any[] = [];
   connectedPeripherals:any[] = [];
   scanning:boolean = false;
-  statusMessage: string;
+  statusMessage: string = 'Initial Status';
   constructor(private ble: BLE,private ngZone:NgZone) {
     // this.setStatus('No devices')
   }
   scan(){
     // this.setStatus('Scanning for Bluetooth LE Devices');
     this.discoveredDevices = [];
-    this.ble.scan([exampleService],5).subscribe(
+    this.ble.scan([pillowService],5).subscribe(
       device=>this.onDeviceDiscovered(device),
       error=>this.scanError(error),()=>this.scanning = false
     );
@@ -50,7 +51,24 @@ export class BleService {
   setStatus(status:string){
     this.statusMessage = status;
   }
-  service1(){
-    console.log('Ble service 1 executed');
+  writeService(serviceUUID:string,serviceCharacteristic:string,value:number[]){
+    console.log(`Ble service ${serviceUUID}  executed`);
+    const deviceId = this.connectedPeripherals[0].id;
+
+    let buffer = new Uint8Array(value).buffer;
+    // let buffer = this.toUint8Array(value);
+    this.ble.write(deviceId,serviceUUID,serviceCharacteristic,buffer).then(
+      ()=>{ this.setStatus(`value: ${value} written to characteristic: ${serviceCharacteristic} service: ${serviceUUID}`)},
+      e => {}
+    );
+  } 
+  toUint8Array(str:string){
+    const arr = str.split('');
+    let cCodes: number[] = [];
+    arr.forEach( c => {
+      cCodes.push(c.charCodeAt(0));
+    });
+    let buffer = new Uint8Array(cCodes).buffer;
+    return buffer;
   }
-}
+} 

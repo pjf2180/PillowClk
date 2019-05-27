@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ConfigService , IConfig} from '../services/config.service';
 import { BleService } from '../services/ble.service';
+import { pillowService, ligth_act_UUID, lba_UUID } from '../services/ble.services.const';
 
 
 
@@ -12,7 +13,7 @@ import { BleService } from '../services/ble.service';
 export class Tab2Page {
 
   config: IConfig;
-  constructor(private configurationService: ConfigService,private ble:BleService) {
+  constructor(private configurationService: ConfigService,private bleService:BleService) {
     this.config = configurationService.getConfig();
   }
   saveConfig() {
@@ -20,13 +21,15 @@ export class Tab2Page {
     //send message to controller via bluetooth
     this.configurationService.saveOnLocalStorage();
   }
+
   lightAnticipation()
   {
     console.log(this.config.lightAnticipation);
-    this.ble.service1();
+    this.bleService.writeService(pillowService,lba_UUID,this.config.lightAnticipation.toString());
   }
   deactivateLight(){
     console.log(`light: ${this.config.lightActivated}`);
+    this.bleService.writeService(pillowService,ligth_act_UUID,(this.config.lightActivated ? 'on': 'off'));
   }
 
 }
