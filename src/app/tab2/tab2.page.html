@@ -17,20 +17,22 @@
           <ion-icon class="ion-color-step-50" name="sunny"></ion-icon>
         </ion-item>
         <ion-item>
-          <ion-label>Anticipación de luz</ion-label>
+          <ion-label>Intensidad de luz</ion-label>
+          <ion-button (click)="rng.disabled = !rng.disabled;" color="light">{{rng.disabled ? 'edit':'lock'}}</ion-button>
         </ion-item>
         <ion-item>
-            <ion-range 
-              min="0" 
-              max="60" 
+            <ion-range #rng
+              min="100" 
+              max="255" 
               step="5" 
               snaps="true" 
+              disabled="true"
               pin="true" 
               color="secondary"
               [(ngModel)]="config.lightAnticipation"
               (ionChange)="lightAnticipation()">
-              <ion-label slot="start">0</ion-label>
-              <ion-label slot="end">60</ion-label>
+              <ion-label slot="start">bajo</ion-label>
+              <ion-label slot="end">alto</ion-label>
             </ion-range>
           </ion-item>
       

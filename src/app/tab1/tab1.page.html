@@ -7,7 +7,7 @@
 </ion-header>
 
 <ion-content>
-    <ion-card class="welcome-card">
+    <ion-card *ngIf="false" class="welcome-card">
       <ion-img src="/assets/happy-woman-sleeping-pillow.png"></ion-img>
       <ion-card-header>
         <ion-card-subtitle>Empieza a dormir mejor</ion-card-subtitle>
@@ -17,6 +17,48 @@
         <p>Escoge tu horario favorito para ir a dormir y despertar, asegurandote de que estas durmiendo lo suficiente.</p>
       </ion-card-content>
     </ion-card>
+
+    <ion-card>
+        <ion-img src="/assets/graph.png"></ion-img>
+      <ion-card-header>
+        <ion-card-subtitle>Resumen</ion-card-subtitle>
+        <ion-card-title>Anoche</ion-card-title>
+      </ion-card-header>
+    
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="4">
+              En cama
+            </ion-col>
+            <ion-col>
+              10:30 pm - 6:30 am
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="4">
+              Tiempo en cama
+            </ion-col>
+            <ion-col>
+              8 horas
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="4">
+              calidad de sueño
+            </ion-col>
+            <ion-col>
+              85%
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    
+
+
+
     <ion-list>
       <ion-list-header>
         <ion-label>Configuración</ion-label>

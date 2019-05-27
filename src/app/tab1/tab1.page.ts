@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit  } from '@angular/core';
-import { IonDatetime, IonRange, IonLabel, IonToggle } from '@ionic/angular';
+import { IonDatetime, IonRange,AlertController, IonLabel, IonToggle } from '@ionic/angular';
 import { Time } from '@angular/common';
 import { ConfigService, IConfig } from '../services/config.service';
 import { BleService } from '../services/ble.service';
@@ -27,13 +27,13 @@ export class Tab1Page implements OnInit {
 
   private perDaySleeping: Time = {'hours': 8, 'minutes': 0};
   private sleepTime = '';
-  constructor(private configurationService: ConfigService,private bleService:BleService) {
+  constructor(private configurationService: ConfigService,private bleService:BleService,public alertController: AlertController) {
     // this.sleepTime =  new Date().toISOString();
     console.log('tab1 started');
     console.log(configurationService);
     this.config =  this.configurationService.getConfig();
   }
-  ngOnInit() {
+  ngOnInit() { 
 
     this.sleepPicker.minuteValues = '0,5,10,15,20,25,30,35,40,45,50,55';
     this.wakePicker.minuteValues = this.sleepPicker.minuteValues;
@@ -59,12 +59,21 @@ export class Tab1Page implements OnInit {
 
 
     this.sleepTime = this.getElapsedTimeString();
-
+    this.presentAlert();
   }
-  alarmActivation(){
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'Nivel de sueño regular ',
+      subHeader: '',
+      message: 'Estuviste muy cerca de tener un descanso perfecto, sigue asi, recuerda que dormir bien es vital para la salud',
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  }
+  alarmActivation() {
     this.set_alarm_time();
-    this.bleService.writeService(pillowService,alarm_act_UUID,(this.config.alarmActivated ?  [0,1]:[0,2]));
-    
+    this.bleService.writeService(pillowService,alarm_act_UUID,(this.config.alarmActivated ?  [0,1]:[0,2])); 
   }
   set_alarm_time(){
     this.bleService.writeService(pillowService,set_alarm_time_UUID,[1,0,15]);
@@ -79,6 +88,7 @@ export class Tab1Page implements OnInit {
     this.configurationService.saveOnLocalStorage();
     
   }
+
   onTimePickerChanged() {
     console.log('timer picker changed');
     console.log(`BedTime: ${this.getMinutesElapsed(this.sleepPicker.value)}`);
